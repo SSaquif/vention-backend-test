@@ -6,13 +6,13 @@ exports.seed = function (knex) {
         {
           id: 1,
           name: "Excalibur",
-          power_level: 20930, // placeholder value
+          power_level: 20630,
           qty: 1,
           status: "new",
         },
         {
           id: 2,
-          name: "Magic Staff", //placehoder value
+          name: "Magic Staff",
           power_level: 3250,
           qty: 1,
           status: "new",
