@@ -26,8 +26,15 @@ class Material {
   // Quest 4
   static async add(pwerLvl, qty) {
     try {
+      let insert = await db(table3).insert({
+        power_level: pwerLvl,
+        qty,
+      });
+      console.log("insert", insert);
+      return { success: true, insertCount: insert.rowCount };
     } catch (err) {
-      throw new Error("Database Error");
+      console.log(err);
+      throw new Error(err.message);
     }
   }
 
@@ -91,7 +98,7 @@ class Material {
   }
 
   // Quest 4
-  delete() {}
+  static async deleteMaterial(id) {}
 }
 
 module.exports = Material;
