@@ -1,4 +1,4 @@
-const { find } = require('../models/material');
+const { find } = require("../models/material");
 
 const MaterialService = () => {
   const getMaterial = async (id) => {
@@ -6,7 +6,7 @@ const MaterialService = () => {
   };
 
   return {
-    getMaterial
+    getMaterial,
   };
 };
 
