@@ -44,6 +44,8 @@ class Weapon {
 
       const compositionPowerlvls = await Promise.all(promises);
 
+      console.log(compositionPowerlvls);
+
       // summation to get total power lvl
       return compositionPowerlvls.reduce(
         (acc, compositionPower) => acc + compositionPower,

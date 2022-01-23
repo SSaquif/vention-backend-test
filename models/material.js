@@ -1,5 +1,10 @@
-const db = require('../config/dbConfig.js');
-const table = 'materials';
+const db = require("../config/dbConfig.js");
+const { getPowerLevel } = require("../models/weapon");
+
+const table1 = "weapons";
+const table2 = "weapon_materials";
+const table3 = "materials";
+const table4 = "compositions";
 
 class Material {
   constructor(payload) {
@@ -11,10 +16,10 @@ class Material {
 
   static async find(id) {
     try {
-      let material = await db(table).where('id', id).first();
+      let material = await db(table3).where("id", id).first();
       return new Material(material);
-    } catch (e) {
-      throw new Error('Material not found');
+    } catch (err) {
+      throw new Error("Material not found");
     }
   }
 
@@ -23,6 +28,44 @@ class Material {
 
   // TO BE IMPLEMENTED
   delete() {}
+
+  // update material powerLvl
+  static async updatePower(id, powerLvl) {
+    try {
+      let updatedMaterialRows = await db(table3)
+        .where("id", id)
+        .update("power_level", powerLvl);
+
+      if (!updatedMaterialRows) {
+        throw new Error("Material not found");
+      } else {
+        let associatedWeapons = await db(table2).where("material_id", id);
+
+        const promises = associatedWeapons.map(async (weapon) => {
+          const newWeaponPower = await getPowerLevel(weapon.weapon_id);
+          console.log("newWeaponPower", newWeaponPower);
+          return await db(table1)
+            .where("id", weapon.weapon_id)
+            .update("power_level", newWeaponPower);
+        });
+
+        const individualUpdatedWeaponRows = await Promise.all(promises);
+
+        const updatedWeaponRows = individualUpdatedWeaponRows.reduce(
+          (acc, updateCount) => acc + updateCount,
+          0
+        );
+
+        return {
+          success: true,
+          updatedMaterialRows,
+          updatedWeaponRows,
+        };
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Material;
