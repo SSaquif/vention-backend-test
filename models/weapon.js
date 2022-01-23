@@ -54,6 +54,7 @@ class Weapon {
     }
   }
 
+  // helper function used to calulate power of a single/sub composition tree
   static async compositionPowerLvl(id) {
     try {
       const materialData = await db(table3).where("id", id).first();
