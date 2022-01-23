@@ -23,12 +23,15 @@ class Material {
     }
   }
 
-  // TO BE IMPLEMENTED
-  update() {}
+  // Quest 4
+  static async add(pwerLvl, qty) {
+    try {
+    } catch (err) {
+      throw new Error("Database Error");
+    }
+  }
 
-  // TO BE IMPLEMENTED
-  delete() {}
-
+  // Quest 3
   // update material powerLvl
   static async updatePower(id, powerLvl) {
     try {
@@ -66,6 +69,29 @@ class Material {
       throw err;
     }
   }
+
+  // Quest 4
+  static async updateQty(id, qty) {
+    try {
+      let updatedMaterialRows = await db(table3)
+        .where("id", id)
+        .update("qty", qty);
+
+      if (!updatedMaterialRows) {
+        throw new Error("Material not found");
+      } else {
+        return {
+          success: true,
+          updatedMaterialRows,
+        };
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  // Quest 4
+  delete() {}
 }
 
 module.exports = Material;

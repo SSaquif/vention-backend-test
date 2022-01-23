@@ -11,6 +11,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Quest 2
 // endpoint to test power_lvl calculation of weapon
 router.get("/power/:id", async (req, res) => {
   try {
