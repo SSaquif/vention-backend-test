@@ -21,4 +21,8 @@ server.get("/", (req, res) => {
   res.status(200).send("Vention Quest");
 });
 
+server.use("*", (req, res) => {
+  res.status(404).send("Endpoint Not Found");
+});
+
 module.exports = server;
