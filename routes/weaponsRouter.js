@@ -11,10 +11,11 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// endpoint to test power_lvl calculation of weapon
 router.get("/power/:id", async (req, res) => {
   try {
-    const weapon = await WeaponService().getPowerLvl(req.params.id);
-    res.status(200).json(weapon);
+    const weaponPowerLvl = await WeaponService().getPowerLvl(req.params.id);
+    res.status(200).json({ id: req.params.id, power_level: weaponPowerLvl });
   } catch (err) {
     res.status(500).json({ err: err.message });
   }

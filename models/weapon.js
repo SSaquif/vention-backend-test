@@ -26,7 +26,7 @@ class Weapon {
   }
 
   // method to calculate power lvl of weapon based on composition
-  static async calculatePowerLvl(id) {
+  static async getPowerLevel(id) {
     try {
       const weaponMaterialsList = await db(table2)
         .select("material_id")
