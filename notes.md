@@ -40,6 +40,8 @@ I adhered to given `route -> service layer -> model` architecture. Only interact
 
 In addition I also added in a assets folder, where I have pictures of my seed/initial tables taken from `pgAdmin` so that I could have a quick refernce. For the purposes of this test I did not add that to my `.gitignore` file
 
+I also created separate branches for each Quest in addition to master and develop branches
+
 ## Testing
 
 I tested my work manually using the vscode extension `thunder-client` (a `postman`/`insomnia` alternative). I have packaged the endpoints used into a json file. Which can be imported into `thunder-client` might also work with `postman/insomnia` (but I am not sure of that)
