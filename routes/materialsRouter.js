@@ -48,4 +48,15 @@ router.patch("/quantity/:id/:qty", async (req, res) => {
   }
 });
 
+// Quest 4
+// endpoint to delete material by id
+router.delete("/:id", async (req, res) => {
+  try {
+    const response = await MaterialService().deleteMaterialById(req.params.id);
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;

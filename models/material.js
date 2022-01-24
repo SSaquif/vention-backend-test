@@ -1,3 +1,4 @@
+const { default: knex } = require("knex");
 const db = require("../config/dbConfig.js");
 const { getPowerLevel } = require("../models/weapon");
 
@@ -98,7 +99,44 @@ class Material {
   }
 
   // Quest 4
-  static async deleteMaterial(id) {}
+  static async deleteMaterial(id) {
+    console.log("here");
+    try {
+      let updatedMaterialRows = await db(table3)
+        .where("id", id)
+        .update({ deleted_at: "now" });
+
+      console.log(updatedMaterialRows);
+      if (!updatedMaterialRows) {
+        throw new Error("Material not found");
+      } else {
+        let associatedWeapons = await db(table2).where("material_id", id);
+
+        const promises = associatedWeapons.map(async (weapon) => {
+          // const newWeaponPower = await getPowerLevel(weapon.weapon_id);
+          // console.log("newWeaponPower", newWeaponPower);
+          return await db(table1)
+            .where("id", weapon.weapon_id)
+            .update("status", "broken");
+        });
+
+        const individualUpdatedWeaponRows = await Promise.all(promises);
+
+        const updatedWeaponRows = individualUpdatedWeaponRows.reduce(
+          (acc, updateCount) => acc + updateCount,
+          0
+        );
+
+        return {
+          success: true,
+          updatedMaterialRows,
+          updatedWeaponRows,
+        };
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Material;
