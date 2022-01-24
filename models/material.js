@@ -31,10 +31,9 @@ class Material {
         power_level: pwerLvl,
         qty,
       });
-      console.log("insert", insert);
+
       return { success: true, insertCount: insert.rowCount };
     } catch (err) {
-      console.log(err);
       throw new Error(err.message);
     }
   }
@@ -54,7 +53,7 @@ class Material {
 
         const promises = associatedWeapons.map(async (weapon) => {
           const newWeaponPower = await getPowerLevel(weapon.weapon_id);
-          console.log("newWeaponPower", newWeaponPower);
+
           return await db(table1)
             .where("id", weapon.weapon_id)
             .update("power_level", newWeaponPower);
@@ -100,21 +99,17 @@ class Material {
 
   // Quest 4
   static async deleteMaterial(id) {
-    console.log("here");
     try {
       let updatedMaterialRows = await db(table3)
         .where("id", id)
         .update({ deleted_at: "now" });
 
-      console.log(updatedMaterialRows);
       if (!updatedMaterialRows) {
         throw new Error("Material not found");
       } else {
         let associatedWeapons = await db(table2).where("material_id", id);
 
         const promises = associatedWeapons.map(async (weapon) => {
-          // const newWeaponPower = await getPowerLevel(weapon.weapon_id);
-          // console.log("newWeaponPower", newWeaponPower);
           return await db(table1)
             .where("id", weapon.weapon_id)
             .update("status", "broken");
