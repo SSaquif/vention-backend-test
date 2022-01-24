@@ -17,8 +17,6 @@ class Weapon {
   static async findById(id) {
     try {
       let weapon = await db(table1).where("id", id).first();
-
-      table2 = "weapon_materials";
       return new Weapon(weapon);
     } catch (e) {
       throw new Error("Weapon not found");

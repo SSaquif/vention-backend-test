@@ -14,6 +14,7 @@ My developer notes for the test
   - [Testing](#testing)
   - [API Endpoints](#api-endpoints)
     - [`GET` /api/weapon/power/:id](#get-apiweaponpowerid)
+    - [`GET` /api/weapon/max-buildable/:id](#get-apiweaponmax-buildableid)
     - [`GET` /api/material/:id](#get-apimaterialid)
     - [`POST` /api/material](#post-apimaterial)
     - [`PATCH` /api/material/power/:id/:power](#patch-apimaterialpoweridpower)
@@ -48,6 +49,10 @@ I tested my work manually using the vscode extension `thunder-client` (a `postma
 ### `GET` /api/weapon/power/:id
 
 A `get` request which uses the given `id` to recursively calculate the weapon power based on it's composition. Created to test `Quest 2`
+
+### `GET` /api/weapon/max-buildable/:id
+
+A `get` request which uses the given `id` to recursively calculate the max number of the weapon than can be built. Created to test `Quest 5`
 
 ### `GET` /api/material/:id
 
