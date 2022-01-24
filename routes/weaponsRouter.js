@@ -22,4 +22,13 @@ router.get("/power/:id", async (req, res) => {
   }
 });
 
+router.get("/max-buildable/:id", async (req, res) => {
+  try {
+    const maxBuildable = await WeaponService().getMaxBuildable(req.params.id);
+    res.status(200).json({ id: req.params.id, max_buildable: maxBuildable });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;

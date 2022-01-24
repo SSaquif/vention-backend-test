@@ -43,8 +43,7 @@ class Weapon {
       });
 
       const compositionPowerlvls = await Promise.all(promises);
-
-      console.log(compositionPowerlvls);
+      // console.log("compositionPowerlvls", compositionPowerlvls);
 
       // summation to get total power lvl
       return compositionPowerlvls.reduce(
@@ -82,6 +81,57 @@ class Weapon {
       }
     } catch (e) {
       throw new Error("Weapon not found");
+    }
+  }
+
+  static async getMaxBuild(id) {
+    try {
+      const weaponMaterialsList = await db(table2)
+        .select("material_id")
+        .where("weapon_id", id);
+
+      if (!weaponMaterialsList.length) {
+        throw new Error("Weapon not found");
+      }
+
+      const promises = weaponMaterialsList.map(async (weaponMaterial) => {
+        const materialId = weaponMaterial.material_id;
+        return await Weapon.compositionMaxBuild(materialId);
+      });
+
+      const compositionMaxBuilds = await Promise.all(promises);
+      // console.log("compositionMaxBuilds", compositionMaxBuilds);
+
+      return Math.min(...compositionMaxBuilds);
+    } catch (e) {
+      throw new Error("Weapon not found");
+    }
+  }
+
+  static async compositionMaxBuild(id) {
+    const materialData = await db(table3).where("id", id).first();
+    const subMaterialsData = await db(table4).where("parent_id", id);
+
+    if (!subMaterialsData.length) {
+      return materialData.qty;
+    } else {
+      //recursive call to calulate quantity of sub tree
+      const promises = subMaterialsData.map(async (subMaterial) => {
+        const subMaxBuild = await Weapon.compositionMaxBuild(
+          subMaterial.material_id
+        );
+
+        return subMaxBuild / subMaterial.qty;
+      });
+
+      const compositionMaxBuilds = await Promise.all(promises);
+
+      return Math.floor(
+        compositionMaxBuilds.reduce(
+          (acc, maxBuild) => acc + maxBuild,
+          materialData.qty
+        )
+      );
     }
   }
 }
